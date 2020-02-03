@@ -13,7 +13,7 @@ def load_config(file, config, parsing, world, camera):
 
 def console(world, camera, config, parsing):
     manual = """HELP:
-1. $add-model <model name> -r <resize> -c <color(r, g, b)> -p <position(x, y, z)>
+1. $add-model <model name>; -r <resize>; -c <color(r, g, b)>; -p <position(x, y, z)>
 2. $cam-pos x, y, z
 3. $cfg <config name(like: default)>
 4. $save_world
