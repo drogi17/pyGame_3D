@@ -49,6 +49,7 @@ class world:
                             data_load[data_arg[0]] = data_arg[1]
                     model_points, connections = get_model(data_load['dir'], float(data_load['resize']))
                     data_load_in = {
+                        'name': str(data_load['dir']),
                         'model_dir': data_load['dir'],
                         'cube_points_dict': model_points,
                         'connections': connections,
@@ -58,12 +59,13 @@ class world:
                     }
                     self.blocks.append(data_load_in)
 
-    def add_obj_model(self, filename, data={'x':0, 'y':0, 'z':0}, color=(255, 255, 255), resize=None):
+    def add_obj_model(self, filename, position={0, 0, 0}, color=(255, 255, 255), resize=None):
         model_points, connections = get_model(filename, resize)
-        x = data['x']
-        y = data['y']
-        z = data['z']
+        x = position[0]
+        y = position[1]
+        z = position[2]
         data = {
+            'name': str(filename),
             'model_dir': filename,
             'cube_points_dict': model_points,
             'connections': connections,
@@ -74,20 +76,43 @@ class world:
         self.blocks.append(data)
 
 
-    def add_axes(self, color=(255, 255, 255), resize=None):
+    def add_axes(self, color=(255, 255, 255), resize=None, mode='4'):
         x = 0
         y = 0
         z = 0
-        cube_points_dict = [
-            (0, 0, 0),
-            (100, 0, 0),
-            (0, 100, 0),
-            (0, 0, 100),
-        ]
+        if mode == '3':
+            cube_points_dict = [
+                (0, 0, 0),
+                (0, 0, 0),
+                (0, 100, 0),
+                (0, 0, 100),
+            ]
+        elif mode == '2':
+            cube_points_dict = [
+                (0, 0, 0),
+                (100, 0, 0),
+                (0, 0, 0),
+                (0, 0, 100),
+            ]
+        elif mode == '1':
+            cube_points_dict = [
+                (0, 0, 0),
+                (100, 0, 0),
+                (0, 100, 0),
+                (0, 0, 0),
+            ]
+        else:
+            cube_points_dict = [
+                (0, 0, 0),
+                (100, 0, 0),
+                (0, 100, 0),
+                (0, 0, 100),
+            ]
 
         connections = [(0, 1), (0, 2), (0, 3)]
 
         data = {
+            'name': 'axes',
             'model_dir': None,
             'cube_points_dict': cube_points_dict,
             'connections': connections,

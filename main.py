@@ -9,12 +9,19 @@ from modules.fps_get import show_fps
 from modules.player import camera, control
 from modules.world import world
 from modules.console import console
+from modules.console import load_config as load_cfg
+from modules.parsing import parsing
+version = '16 Alfa'
 
-version = '15 Alfa'
-
-config = load_config.Config.cfg_dict
 pygame.init()
 world                   = world('Simple')
+config = load_config.cfg_settings.cfg_dict
+file = 'cfg/default.cfg'
+if os.path.exists(file):
+    config = load_cfg(file, config, parsing, world, camera)
+else:
+    print('default.cfg not found')
+    sys.exit()
 SCREEN_RESOLUTION       = config['SCREEN_RESOLUTION']
 if config['SET_NATIVE_RESOLUTION']:
     SCREEN_RESOLUTION   = config['NATIVE_RESOLUTION']
@@ -23,7 +30,7 @@ else:
 GRAB_MODE               = config['GRAB_MODE']
 center_x                = SCREEN_RESOLUTION[0]//2
 center_y                = SCREEN_RESOLUTION[1]//2
-camera                  = camera(pos=[0, 0, -2], resol=SCREEN_RESOLUTION)
+camera                  = camera(pos=[0, 0, 1], resol=SCREEN_RESOLUTION)
 pygame.event.get()
 pygame.mouse.get_rel()
 pygame.mouse.set_visible(0)
@@ -31,10 +38,10 @@ pygame.event.set_grab(GRAB_MODE)
 
 
 ################# Добавление моделек на карту #################
-world.add_axes(color=(255, 0, 0))   #   Добавить подсветку координаты x, y, z
+# world.add_axes(color=(255, 0, 0))   #   Добавить подсветку координаты x, y, z
 # world.add_obj_model('models/Apple.obj', resize=0.4, color=(0, 225, 225)) #    Добавить модельку и изменить размер
 # world.save_world() #   Загрузить мир
-world.load_world('worlds/Simple/') #   Загрузить мир
+# world.load_world('worlds/Simple/') #   Загрузить мир
 
 
 #################    отображение окна     #################
@@ -80,8 +87,9 @@ if not '--no-logo' in sys.argv:
     win.blit(version_text, version_pos)
     pygame.display.update()
     sleep(2)
+
 if config['ON_CONSOLE']:
-    rT1 = threading.Thread(target=console, daemon=True, args=(world, camera, config))
+    rT1 = threading.Thread(target=console, daemon=True, args=(world, camera, config, parsing))
     rT1.start()
 while in_progress:
     win.fill((0, 0, 0))                                          # Залить черным цветом
