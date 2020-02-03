@@ -1,21 +1,25 @@
 import os, sys
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame
-pygame.init()
-import config
+import load_config
 import datetime
+import threading
 from time import sleep
 from modules.fps_get import show_fps
 from modules.player import camera, control
 from modules.world import world
+from modules.console import console
 
+
+config = load_config.Config.cfg_dict
+pygame.init()
 world                   = world('Simple')
-SCREEN_RESOLUTION       = config.SCREEN_RESOLUTION
-if config.SET_NATIVE_RESOLUTION:
-	SCREEN_RESOLUTION   = config.NATIVE_RESOLUTION
+SCREEN_RESOLUTION       = config['SCREEN_RESOLUTION']
+if config['SET_NATIVE_RESOLUTION']:
+    SCREEN_RESOLUTION   = config['NATIVE_RESOLUTION']
 else:
-	SCREEN_RESOLUTION   = config.SCREEN_RESOLUTION
-GRAB_MODE               = config.GRAB_MODE
+    SCREEN_RESOLUTION   = config['SCREEN_RESOLUTION']
+GRAB_MODE               = config['GRAB_MODE']
 center_x                = SCREEN_RESOLUTION[0]//2
 center_y                = SCREEN_RESOLUTION[1]//2
 camera                  = camera(pos=[0, 0, -2], resol=SCREEN_RESOLUTION)
@@ -35,7 +39,7 @@ world.load_world('worlds/Simple/') #   Загрузить мир
 #################    отображение окна     #################
 pygame.display.set_caption('GAME')                     # Обьявление Имени окна
 win = pygame.display.set_mode(SCREEN_RESOLUTION)       # Размер экрана
-if config.FUULSCREEN:                                  #\   FUUL SCREEN MODE
+if config['FUULSCREEN']:                                  #\   FUUL SCREEN MODE
     pygame.display.toggle_fullscreen()                 #/   FUUL SCREEN MODE
 
 
@@ -59,6 +63,11 @@ def conv_pos (cords):
     x = cords[0]*(center_x/cords[2])
     y = cords[1]*(center_x/cords[2])
     return [x, y]
+
+
+if config['ON_CONSOLE']:
+    rT1 = threading.Thread(target=console, daemon=True, args=(world, camera, config))
+    rT1.start()
 
 in_progress = True # Начать работу цикла
 if not '--no-logo' in sys.argv:
@@ -108,18 +117,18 @@ while in_progress:
                 if len(points_array2d) == 2:
                     points_array2d = [[x+y for x, y in zip(points_array2d[0], [center_x, center_y])], 
                                      [ x+y for x, y in zip(points_array2d[1], [center_x, center_y])]] 
-                    if config.DRAW_POINTS:
+                    if config['DRAW_POINTS']:
                         pygame.draw.circle(win, block['color'], (round(points_array2d[0][0]), round(points_array2d[0][1])), 4)
                         pygame.draw.circle(win, block['color'], (round(points_array2d[1][0]), round(points_array2d[1][1])), 4)
                     pygame.draw.line(win, block['color'], points_array2d[0], points_array2d[1], 1)
                 point_nomb += 1
-    if config.SHOW_POINTER:
-        if config.CURSOR_TYPES[config.CURSOR_TYPE] == 1:
-            pygame.draw.circle(win, config.POINTER_COLOR, (round(center_x), round(center_y)), 2)
-        elif config.CURSOR_TYPES[config.CURSOR_TYPE] == 2:
+    if config['SHOW_POINTER']:
+        if load_config.CURSOR_TYPES[config['CURSOR_TYPE']] == 1:
+            pygame.draw.circle(win, config['POINTER_COLOR'], (round(center_x), round(center_y)), 2)
+        elif load_config.CURSOR_TYPES[config['CURSOR_TYPE']] == 2:
             pass
     ########################################## New frame ##########################################
-    win, fps, fps_now, datetime_now = show_fps(win, fps, fps_now, datetime_now, config.FPS_POSITION)
+    win, fps, fps_now, datetime_now = show_fps(win, fps, fps_now, datetime_now, config['FPS_POSITION'])
     pygame.display.update()
     pygame.display.flip()
-    clock.tick(config.FPS_MAX)
+    clock.tick(config['FPS_MAX'])
