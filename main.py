@@ -66,10 +66,6 @@ def conv_pos (cords):
     return [x, y]
 
 
-if config['ON_CONSOLE']:
-    rT1 = threading.Thread(target=console, daemon=True, args=(world, camera, config))
-    rT1.start()
-
 in_progress = True # Начать работу цикла
 if not '--no-logo' in sys.argv:
     print('MADE BY: @drogi17 & @Alexey6446')
@@ -84,6 +80,9 @@ if not '--no-logo' in sys.argv:
     win.blit(version_text, version_pos)
     pygame.display.update()
     sleep(2)
+if config['ON_CONSOLE']:
+    rT1 = threading.Thread(target=console, daemon=True, args=(world, camera, config))
+    rT1.start()
 while in_progress:
     win.fill((0, 0, 0))                                          # Залить черным цветом
     GRAB_MODE, camera, in_progress =  control(GRAB_MODE, camera) # Контролировать положение камеры

@@ -13,6 +13,7 @@ def load_config(file, cfg_settings):
                 coments = line.find('#')
                 if coments != -1:
                     line = line[:coments]
+                line = str(line).replace('\n', '')
                 setting = str(line).replace(' ', '').replace('  ', '').split('=')
                 if len(setting) > 1:
                     if setting[1] == 'False':
