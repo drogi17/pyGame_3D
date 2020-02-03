@@ -1,4 +1,5 @@
 import tkinter as tk
+import os, sys
 root = tk.Tk()
 CURSOR_TYPES                = {
     'point': 1,
@@ -6,30 +7,34 @@ CURSOR_TYPES                = {
 }
 
 def load_config(file, cfg_settings):
-    with open(file, 'r') as f:
-        for line in f.readlines():
-            coments = line.find('#')
-            if coments != -1:
-                line = line[:coments]
-            setting = str(line).replace(' ', '').replace('  ', '').split('=')
-            if len(setting) > 1:
-                if setting[1] == 'False':
-                    setting[1] = False
-                elif setting[1] == 'True':
-                    setting[1] = True
-                elif str(setting[1]).isdigit():
-                    setting[1] = int(setting[1])
-                elif ',' in setting[1]:
-                    array = str(setting[1]).split(',')
-                    nomb = 0
-                    while nomb <= len(array)-1:
-                        if str(array[nomb]).isdigit():
-                            array[nomb] = int(array[nomb])
-                        nomb += 1
-                    setting[1] = array
-                if setting[0] in cfg_settings.cfg_dict:
-                    cfg_settings.cfg_dict[setting[0]] = setting[1]
-    return cfg_settings
+    if os.path.exists(file):
+        with open(file, 'r') as f:
+            for line in f.readlines():
+                coments = line.find('#')
+                if coments != -1:
+                    line = line[:coments]
+                setting = str(line).replace(' ', '').replace('  ', '').split('=')
+                if len(setting) > 1:
+                    if setting[1] == 'False':
+                        setting[1] = False
+                    elif setting[1] == 'True':
+                        setting[1] = True
+                    elif str(setting[1]).isdigit():
+                        setting[1] = int(setting[1])
+                    elif ',' in setting[1]:
+                        array = str(setting[1]).split(',')
+                        nomb = 0
+                        while nomb <= len(array)-1:
+                            if str(array[nomb]).isdigit():
+                                array[nomb] = int(array[nomb])
+                            nomb += 1
+                        setting[1] = array
+                    if setting[0] in cfg_settings.cfg_dict:
+                        cfg_settings.cfg_dict[setting[0]] = setting[1]
+        return cfg_settings
+    else:
+        print('default.cfg not found')
+        sys.exit()
 
 class Config:
     cfg_dict = {

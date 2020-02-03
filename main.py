@@ -10,6 +10,7 @@ from modules.player import camera, control
 from modules.world import world
 from modules.console import console
 
+version = '15 Alfa'
 
 config = load_config.Config.cfg_dict
 pygame.init()
@@ -77,6 +78,10 @@ if not '--no-logo' in sys.argv:
     name_text = name_font.render('3D GAME', True, (225, 225, 225))
     name_pos = (center_x-center_x/1.6, center_y-center_y/4)
     win.blit(name_text, name_pos)
+    version_font = pygame.font.Font(None, 50)
+    version_text = version_font.render('V-'+version, True, (225, 225, 225))
+    version_pos = (center_x*0.05, center_y+center_y*0.8)
+    win.blit(version_text, version_pos)
     pygame.display.update()
     sleep(2)
 while in_progress:
