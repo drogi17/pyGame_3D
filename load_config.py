@@ -6,8 +6,6 @@ CURSOR_TYPES   = {
     'axis': 2
 }
 
-
-
 class Config:
     cfg_dict = {
     'SCREEN_RESOLUTION': (800, 800),

@@ -132,7 +132,10 @@ while in_progress:
                     if config['DRAW_POINTS']:
                         pygame.draw.circle(win, block['color'], (round(points_array2d[0][0]), round(points_array2d[0][1])), 4)
                         pygame.draw.circle(win, block['color'], (round(points_array2d[1][0]), round(points_array2d[1][1])), 4)
-                    pygame.draw.line(win, block['color'], points_array2d[0], points_array2d[1], 1)
+                    try:
+                        pygame.draw.line(win, block['color'], points_array2d[0], points_array2d[1], 1)
+                    except TypeError:
+                        pass
                 point_nomb += 1
     if config['SHOW_POINTER']:
         if load_config.CURSOR_TYPES[config['CURSOR_TYPE']] == 1:
