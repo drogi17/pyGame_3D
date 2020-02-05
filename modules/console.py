@@ -3,7 +3,7 @@ import os.path, sys
 
 def load_config(file, config, parsing, world, camera):
     if os.path.exists(file):
-        with open(file, 'r') as f:
+        with open(file, 'r', encoding="utf8") as f:
             nomber = 0
             for line in f.readlines():
                 data = parsing(line, world, nomber, camera)

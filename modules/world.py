@@ -24,7 +24,7 @@ class world:
                 break
             except:
                 dir_create_nomber += 1
-        with open(dir_w + '/data.wld', 'w') as f:
+        with open(dir_w + '/data.wld', 'w', encoding="utf8") as f:
             for block in self.blocks:
                 if block['model_dir']:
                     try:
@@ -40,7 +40,7 @@ class world:
                         pass
 
     def load_world(self, world_dir):
-        with open(world_dir + '/data.wld', 'r') as f:
+        with open(world_dir + '/data.wld', 'r', encoding="utf8") as f:
             for line in f.readlines():
                 if line[:6] == 'model:':
                     data_load = {}

@@ -1,7 +1,7 @@
 def get_model(file, resize):
     points  = []
     connects_dict = []
-    with open(file, 'r') as f:
+    with open(file, 'r', encoding="utf8") as f:
         for line in f.readlines():
             if line[0] == 'v' and line[1] == ' ':
                 line = line.replace('v ', '').replace('\n', '')
