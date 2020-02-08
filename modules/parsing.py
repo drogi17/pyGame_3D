@@ -47,7 +47,7 @@ class Handler:
                 if block_id == id_model:
                     array = str(pos_model).split(',')
                     block['pos'] = [int(array[0]),int(array[1]),int(array[2])]
-                    print_ok('Camera moved => ' + str(self.camera.pos))
+                    print_ok('Camera moved => ' + str(block['pos']))
                     moved = True
                     break
         if not moved:
@@ -93,8 +93,11 @@ class Handler:
                 while arg_c <= len(array)-1:
                     parametr = get_parametrs(array[arg_c])
                     if parametr[0] == '-r':
-                        if parametr[1].isdigit():
-                            resize = int(parametr[1])
+                        try:
+                            if parametr[1]:
+                                resize = float(parametr[1])
+                        except:
+                            pass
                     elif parametr[0] == '-c':
                         color = parametr[1].split(',')
                         color_rgb = []
