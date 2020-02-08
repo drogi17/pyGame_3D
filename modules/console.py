@@ -23,7 +23,6 @@ def console(world, camera, config, parsing):
 6. $load_world <dir (like: worlds/Simple/)>
 7. $axes <axes mode 1, 2, 3, 4>
 8. SET <const> = <value>
-9. cfg <config name>
 """
     print(manual)
     while True:
